@@ -7,6 +7,7 @@ import 'package:wan_flutter/api/CommonService.dart';
 import 'package:wan_flutter/common/GlobalConfig.dart';
 import 'package:wan_flutter/model/homebanner/HomeBannerItemModel.dart';
 import 'package:wan_flutter/model/homebanner/HomeBannerModel.dart';
+import 'package:wan_flutter/pages/article_list/ArticleListPage.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -31,7 +32,12 @@ class _MainState extends State<MainPage> {
         title: Text(GlobalConfig.homeTab),
         centerTitle: true,
       ),
-      body: _buildBanner(context),
+      body: ArticleListPage(
+        header: _buildBanner(context),
+        request: (page) {
+          return CommonService().getArticleListData(page);
+        },
+      ),
     );
   }
 
