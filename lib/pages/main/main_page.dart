@@ -34,6 +34,7 @@ class _MainState extends State<MainPage> {
       ),
       body: ArticleListPage(
         header: _buildBanner(context),
+        keepAlive: true,
         request: (page) {
           return CommonService().getArticleListData(page);
         },

@@ -1,6 +1,10 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:wan_flutter/common/GlobalConfig.dart';
 import 'package:wan_flutter/model/article_list/ArticleItemModel.dart';
+import 'package:wan_flutter/model/article_list/ArticleListModel.dart';
 import 'package:wan_flutter/pages/article_list/ArticleItemPage.dart';
 import 'package:wan_flutter/widget/EmptyHolder.dart';
 import 'package:wan_flutter/widget/QuickTopFloatBtn.dart';
@@ -16,14 +20,13 @@ class ArticleListPage extends StatefulWidget {
   final ShowQuickTop showQuickTop;
   final bool selfControl;
 
-  ArticleListPage(
-      {Key key,
-      this.header,
-      this.request,
-      this.emptyMsg,
-      this.keepAlive,
-      this.showQuickTop,
-      this.selfControl})
+  ArticleListPage({Key key,
+    this.header,
+    this.request,
+    this.emptyMsg,
+    this.keepAlive = false,
+    this.showQuickTop,
+    this.selfControl = true})
       : super(key: key);
 
   @override
@@ -37,11 +40,11 @@ class ArticleListPageState extends State<ArticleListPage>
   List<ArticleItemModel> _listData = List();
   List<int> _listDataId = List();
   GlobalKey<QuickTopFloatBtnState> _quickTopFloatBtnKey = new GlobalKey();
-  int _listDataPae = -1;
+  int _listDataPage = -1;
   var _haveMoreData = true;
   double _screenHeight;
   ListView listView;
-
+  bool isLoading = false;
   ScrollController _controller;
 
   @override
@@ -81,18 +84,108 @@ class ArticleListPageState extends State<ArticleListPage>
       },
     );
 
-    return null;
+    var body = NotificationListener(
+      onNotification: onScrollNotification,
+      child: RefreshIndicator(
+          color: GlobalConfig.colorPrimary,
+          child: listView,
+          onRefresh: handleRefresh),
+    );
+    return (null == widget.showQuickTop)
+        ? Scaffold(
+      resizeToAvoidBottomPadding: false,
+      body: body,
+      floatingActionButton: QuickTopFloatBtn(
+        key: _quickTopFloatBtnKey,
+        onPressed: () {
+          handleScroll(0.0);
+        },
+      ),
+    )
+        : body;
   }
 
   @override
   bool get wantKeepAlive => widget.keepAlive;
+
+  bool onScrollNotification(ScrollNotification scrollNotification) {
+    if (scrollNotification.metrics.pixels >=
+        scrollNotification.metrics.maxScrollExtent) {
+      _loadNextPage();
+    }
+    if (null == _screenHeight || _screenHeight <= 0) {
+      _screenHeight = MediaQueryData
+          .fromWindow(window)
+          .size
+          .height;
+    }
+    if (scrollNotification.metrics.axisDirection == AxisDirection.down &&
+        _screenHeight >= 10 &&
+        scrollNotification.metrics.pixels >= _screenHeight) {
+      if (null != widget.showQuickTop) {
+        widget.showQuickTop(true);
+      } else {
+        _quickTopFloatBtnKey.currentState.refreshVisible(true);
+      }
+    } else {
+      if (null != widget.showQuickTop) {
+        widget.showQuickTop(false);
+      } else {
+        _quickTopFloatBtnKey.currentState.refreshVisible(false);
+      }
+    }
+    return false;
+  }
+
+  Future<Null> handleRefresh() async {
+    _listDataPage = -1;
+    _listData.clear();
+    _listDataId.clear();
+    await _loadNextPage();
+  }
 
   void handleScroll(double offset, {ScrollController controller}) {
     ((null == controller) ? _controller : controller)?.animateTo(offset,
         duration: Duration(milliseconds: 200), curve: Curves.fastOutSlowIn);
   }
 
-  void _loadNextPage() {}
+  Future<Null> _loadNextPage() async {
+    if (isLoading || !this.mounted) {
+      return null;
+    }
+    isLoading = true;
+    _listDataPage++;
+    var result = await _loadListData(_listDataPage);
+    if (_listData.length < 8) {
+      _listDataPage++;
+      result = await _loadListData(_listDataPage);
+    }
+    if (this.mounted) setState(() {});
+    isLoading = false;
+    return result;
+  }
+
+  Future<Null> _loadListData(int page) {
+    _haveMoreData = true;
+    return widget.request(page).then((response) {
+      var newList = ArticleListModel
+          .fromJson(response.data)
+          .data
+          .datas;
+      var originListLength = _listData.length;
+      if (null != newList && newList.length > 0) {
+//        _listData.addAll(newList);
+        //防止添加进重复数据
+        newList.forEach((item) {
+          if (!_listDataId.contains(item.id)) {
+            _listData.add(item);
+            _listDataId.add(item.id);
+          }
+        });
+      }
+      _haveMoreData = originListLength != _listData.length;
+    });
+  }
 
   ScrollController getControllerForListView() {
     if (widget.selfControl) {
