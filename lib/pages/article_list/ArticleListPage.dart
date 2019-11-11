@@ -54,7 +54,6 @@ class ArticleListPageState extends State<ArticleListPage>
   }
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
     var itemCount = ((null == _listData) ? 0 : _listData.length) +
         (null == widget.header ? 0 : 1) +

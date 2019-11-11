@@ -6,7 +6,8 @@ class QuickTopFloatBtn extends StatefulWidget {
   final VoidCallback onPressed;
   final bool defaultVisible;
 
-  QuickTopFloatBtn({Key key, this.onPressed, this.defaultVisible})
+  QuickTopFloatBtn(
+      {Key key, @required this.onPressed, this.defaultVisible = false})
       : super(key: key);
 
   @override

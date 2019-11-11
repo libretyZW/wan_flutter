@@ -13,5 +13,5 @@ class GlobalConfig {
   static String projectTab = "项目";
   static String knowledgeSystemsTab = "体系";
   static String weChatTab = "公众号";
-  static String mineTab = "我";
+  static String mineTab = "用户";
 }
