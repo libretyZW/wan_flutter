@@ -14,7 +14,6 @@ import 'package:wan_flutter/widget/QuickTopFloatBtn.dart';
 class UserPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _UserState();
   }
 }
@@ -158,6 +157,7 @@ class _UserState extends State<UserPage> {
         },
       );
     }
+    return _itemListPage;
   }
 
   @override

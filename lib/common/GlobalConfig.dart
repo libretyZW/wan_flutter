@@ -14,4 +14,7 @@ class GlobalConfig {
   static String knowledgeSystemsTab = "体系";
   static String weChatTab = "公众号";
   static String mineTab = "用户";
+
+  static String loginTitle = "登录";
+  static String registerTitle = "注册";
 }
