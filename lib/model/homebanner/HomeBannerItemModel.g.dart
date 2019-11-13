@@ -8,14 +8,15 @@ part of 'HomeBannerItemModel.dart';
 
 HomeBannerItemModel _$HomeBannerItemModelFromJson(Map<String, dynamic> json) {
   return HomeBannerItemModel(
-      json['desc'] as String,
-      json['id'] as int,
-      json['imagePath'] as String,
-      json['isVisible'] as int,
-      json['order'] as int,
-      json['title'] as String,
-      json['type'] as int,
-      json['url'] as String);
+    json['desc'] as String,
+    json['id'] as int,
+    json['imagePath'] as String,
+    json['isVisible'] as int,
+    json['order'] as int,
+    json['title'] as String,
+    json['type'] as int,
+    json['url'] as String,
+  );
 }
 
 Map<String, dynamic> _$HomeBannerItemModelToJson(
@@ -28,5 +29,5 @@ Map<String, dynamic> _$HomeBannerItemModelToJson(
       'order': instance.order,
       'title': instance.title,
       'type': instance.type,
-      'url': instance.url
+      'url': instance.url,
     };

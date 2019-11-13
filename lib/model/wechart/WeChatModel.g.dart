@@ -1,22 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ArticleListModel.dart';
+part of 'WeChatModel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ArticleListModel _$ArticleListModelFromJson(Map<String, dynamic> json) {
-  return ArticleListModel(
-    json['data'] == null
-        ? null
-        : ArticleListDataModel.fromJson(json['data'] as Map<String, dynamic>),
+WeChatModel _$WeChatModelFromJson(Map<String, dynamic> json) {
+  return WeChatModel(
+    (json['data'] as List)
+        ?.map((e) => e == null
+            ? null
+            : WeChatItemModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     json['errorCode'] as int,
     json['errorMsg'] as String,
   );
 }
 
-Map<String, dynamic> _$ArticleListModelToJson(ArticleListModel instance) =>
+Map<String, dynamic> _$WeChatModelToJson(WeChatModel instance) =>
     <String, dynamic>{
       'data': instance.data,
       'errorCode': instance.errorCode,
