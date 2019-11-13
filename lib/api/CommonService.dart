@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:wan_flutter/common/User.dart';
 import 'package:wan_flutter/model/homebanner/HomeBannerModel.dart';
+import 'package:wan_flutter/model/knowledge_systems/KnowledgeSystemsModel.dart';
+import 'package:wan_flutter/model/project/ProjectClassifyModel.dart';
 import 'package:wan_flutter/model/wechart/WeChatModel.dart';
 
 import 'Api.dart';
@@ -12,11 +14,11 @@ class CommonService {
     });
   }
 
-//  void getProjectClassify(Function callback) async {
-//    Dio().get(Api.PROJECT_CLASSIFY, options: _getOptions()).then((response) {
-//      callback(ProjectClassifyModel.fromJson(response.data));
-//    });
-//  }
+  void getProjectClassify(Function callback) async {
+    Dio().get(Api.PROJECT_CLASSIFY, options: _getOptions()).then((response) {
+      callback(ProjectClassifyModel.fromJson(response.data));
+    });
+  }
 
   void getWeChatNames(Function callback) async {
     Dio().get(Api.MP_WECHAT_NAMES, options: _getOptions()).then((response) {
@@ -33,11 +35,11 @@ class CommonService {
     return await Dio().get(url, options: _getOptions());
   }
 
-//  void getTrees(Function callback) async {
-//    Dio().get(Api.TREES_LIST, options: _getOptions()).then((response) {
-//      callback(KnowledgeSystemsModel.fromJson(response.data));
-//    });
-//  }
+  void getTrees(Function callback) async {
+    Dio().get(Api.TREES_LIST, options: _getOptions()).then((response) {
+      callback(KnowledgeSystemsModel.fromJson(response.data));
+    });
+  }
 
   Future<Response> getTreeItemList(String url) async {
     return await Dio().get(url, options: _getOptions());

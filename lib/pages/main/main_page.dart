@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wan_flutter/api/CommonService.dart';
 import 'package:wan_flutter/common/GlobalConfig.dart';
+import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/model/homebanner/HomeBannerItemModel.dart';
 import 'package:wan_flutter/model/homebanner/HomeBannerModel.dart';
 import 'package:wan_flutter/pages/article_list/ArticleListPage.dart';
@@ -60,7 +61,7 @@ class _MainState extends State<MainPage> {
             delayTime: 10,
             onBannerClickListener: (int index, dynamic itemData) {
               HomeBannerItemModel item = itemData;
-//              Router().openWeb(context, item.url, item.title);
+              Router().openWeb(context, item.url, item.title);
             },
             buildShowView: (index, data) {
               return CachedNetworkImage(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wan_flutter/api/Api.dart';
 import 'package:wan_flutter/common/GlobalConfig.dart';
+import 'package:wan_flutter/common/Router.dart';
 import 'package:wan_flutter/fonts/IconF.dart';
 import 'package:wan_flutter/model/article_list/ArticleItemModel.dart';
 import 'package:wan_flutter/utils/StringUtil.dart';
@@ -20,6 +21,7 @@ class ArticleItemPage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         SystemChannels.textInput.invokeMethod("TextInput.hide");
+        Router().openArticle(context, item);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.5),
